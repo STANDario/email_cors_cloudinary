@@ -4,6 +4,7 @@ from fastapi_limiter import FastAPILimiter
 from fastapi.middleware.cors import CORSMiddleware
 
 from src.routes import contacts, auth
+from src.conf.config import settings
 
 
 app = FastAPI()
@@ -24,7 +25,8 @@ app.include_router(contacts.router, prefix="/api")
 
 @app.on_event("startup")
 async def startup():
-    r = await redis.Redis(host="localhost", port=6379, db=0, encoding="utf-8", decode_responses= True)
+    r = await redis.Redis(host=settings.redis_host, port=settings.redis_port, db=0, encoding="utf-8",
+                          decode_responses=True)
     await FastAPILimiter.init(r)
 
 

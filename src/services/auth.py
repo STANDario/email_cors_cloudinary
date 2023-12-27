@@ -7,14 +7,15 @@ from passlib.context import CryptContext
 from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
 
+from src.conf.config import settings
 from src.database.db import get_db
 from src.repository import auth as repository_users
 
 
 class Auth:
     pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-    SECRET_KEY = "andrii_secret_key:)"
-    ALGHORITM = "HS256"
+    SECRET_KEY = settings.secret_key
+    ALGHORITM = settings.algorithm
     oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/auth/login")
 
     def verify_password(self, plain_password, hashed_password):
