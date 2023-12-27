@@ -20,6 +20,10 @@ async def get_contact_by_email(contact_email: str, user: User, db: Session):
     return db.query(Contact).filter(and_(Contact.email == contact_email, Contact.user_id == user.id)).first()
 
 
+async def get_user_by_email_for_confirm(contact_email: str, db: Session):
+    return db.query(User).filter(User.email == contact_email).first()
+
+
 async def get_contact_by_name(contact_name: str, user: User, db: Session):
     return db.query(Contact).filter(and_(Contact.first_name == contact_name, Contact.user_id == user.id)).all()
 
@@ -71,3 +75,9 @@ async def get_birthday_contact(user: User, db: Session):
             print(maybe_seven_days)
             contacts_result.append(contact)
     return contacts_result
+
+
+async def confirmed_email(email: str, db: Session):
+    user = await get_user_by_email_for_confirm(email, db)
+    user.confirmed = True
+    db.commit()
