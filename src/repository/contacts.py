@@ -81,3 +81,10 @@ async def confirmed_email(email: str, db: Session):
     user = await get_user_by_email_for_confirm(email, db)
     user.confirmed = True
     db.commit()
+
+
+async def update_avatar(email: str, url: str, db: Session):
+    user = await get_user_by_email_for_confirm(email, db)
+    user.avatar = url
+    db.commit()
+    return user
